@@ -44,7 +44,7 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font);
-  background: var(--white);
+  background: #f2f4f7;
   color: var(--text);
   font-size: 16px;
   line-height: 1.6;
@@ -118,14 +118,7 @@ nav {
   padding: 80px 40px 96px;
   position: relative; overflow: hidden;
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 50% 60% at 50% 110%, rgba(59,130,246,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 40% at 85% 20%, rgba(99,102,241,0.10) 0%, transparent 60%);
-  pointer-events: none;
-}
+.hero::before { display: none; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,0.1);
@@ -185,20 +178,14 @@ nav {
   border-radius: var(--radius);
   padding: 18px 16px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
   display: flex; flex-direction: column; align-items: flex-start;
   text-align: left;
-}
-.entry-card:hover {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.22);
-  transform: translateY(-2px);
 }
 .entry-card.gold {
   border-color: rgba(253,211,77,0.4);
   background: rgba(253,211,77,0.08);
 }
-.entry-card.gold:hover { background: rgba(253,211,77,0.13); border-color: rgba(253,211,77,0.6); }
+
 .entry-icon {
   width: 36px; height: 36px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
@@ -216,14 +203,8 @@ nav {
   font-size: 11px; color: rgba(255,255,255,0.5);
   line-height: 1.4; flex: 1;
 }
-.entry-arrow {
-  margin-top: 10px; font-size: 12px;
-  color: rgba(255,255,255,0.35);
-  transition: transform 0.15s, color 0.15s;
-}
-.entry-card:hover .entry-arrow { transform: translateX(3px); color: rgba(255,255,255,0.6); }
+.entry-arrow { margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.35); }
 .entry-card.gold .entry-arrow { color: rgba(253,211,77,0.5); }
-.entry-card.gold:hover .entry-arrow { color: #fcd34d; }
 
 /* ─── SECTIONS ─── */
 .section { max-width: 1100px; margin: 0 auto; padding: 72px 40px; }
@@ -251,13 +232,9 @@ nav {
   margin-top: 48px;
 }
 .feature-card {
-  border: 1px solid var(--border); border-radius: var(--radius);
+  border: 1px solid rgba(0,0,0,0.06); border-radius: var(--radius);
   padding: 28px 24px; background: var(--white);
-  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-}
-.feature-card:hover {
-  box-shadow: var(--shadow-md); transform: translateY(-3px);
-  border-color: var(--gray-200);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .feature-icon {
   width: 48px; height: 48px; border-radius: 10px;
@@ -282,7 +259,7 @@ nav {
 .feature-link:hover { gap: 8px; }
 
 /* ─── PRICING TEASER ─── */
-.pricing-section { background: var(--gray-bg); padding: 72px 40px; }
+.pricing-section { background: #f2f4f7; padding: 72px 40px; }
 .pricing-inner { max-width: 1100px; margin: 0 auto; }
 .plans-row {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -292,31 +269,41 @@ nav {
   align-items: start;
 }
 .plan-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px 24px;
+  background: var(--white);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 16px; padding: 28px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   display: grid;
-  /* rows: name | tagline | orig-price | price | CTA-button | features */
   grid-template-rows: auto auto auto auto auto 1fr;
   position: relative;
 }
-/* Force the plans-row itself to use subgrid row tracks */
 @supports (grid-template-rows: subgrid) {
-  .plans-row {
-    grid-template-rows: auto auto auto auto auto 1fr;
-    align-items: stretch;
-  }
-  .plan-card {
-    grid-row: span 6;
-    grid-template-rows: subgrid;
-  }
+  .plans-row { grid-template-rows: auto auto auto auto auto 1fr; align-items: stretch; }
+  .plan-card { grid-row: span 6; grid-template-rows: subgrid; }
 }
 .plan-card.featured {
-  border: 2px solid var(--navy);
-  box-shadow: var(--shadow-md);
+  background: linear-gradient(145deg, #0b6b7d 0%, #1a2236 100%);
+  border: none;
+  box-shadow: 0 8px 32px rgba(11,107,125,0.28), 0 2px 8px rgba(0,0,0,0.12);
+  overflow: hidden;
 }
+.plan-card.featured::after {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none;
+}
+.plan-card.featured .plan-name { color: #fff; }
+.plan-card.featured .plan-tagline { color: rgba(255,255,255,0.65); }
+.plan-card.featured .plan-price { color: #fff; }
+.plan-card.featured .plan-price-orig-placeholder { visibility: hidden; }
+.plan-card.featured .plan-period { color: rgba(255,255,255,0.6); }
+.plan-card.featured .plan-cta.cta-navy { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+.plan-card.featured .plan-features-list li { color: rgba(255,255,255,0.82); }
+.plan-card.featured .check { color: #5ee7d4; }
+.plan-card.featured .plan-badge-tag { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.2); }
 .plan-featured-badge {
   position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-  background: var(--navy); color: var(--white);
+  background: #0b6b7d; color: var(--white);
   font-size: 12px; font-weight: 700; padding: 4px 16px;
   border-radius: 100px; white-space: nowrap;
   display: flex; align-items: center; gap: 6px;
@@ -588,12 +575,41 @@ footer {
   .page-body { padding: 32px 20px 60px; }
 }
 
-/* ─── ANIMATIONS ─── */
-.fade-up {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+/* ─── NEW CSS ─── */
+.fade-up { opacity: 1; }
+.fade-up.in { opacity: 1; }
+
+/* ─── HERO STATS ─── */
+.hero-stats { display: flex; align-items: center; justify-content: center; gap: 0; margin: 40px 0 0; flex-wrap: wrap; row-gap: 14px; }
+.hero-stat { text-align: center; padding: 0 28px; }
+.hs-num { font-size: 22px; font-weight: 900; color: var(--white); letter-spacing: -0.5px; }
+.hs-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; letter-spacing: 0.5px; }
+.hero-stat-div { width: 1px; height: 36px; background: rgba(255,255,255,0.15); }
+
+/* ─── VALUE STRIP ─── */
+.value-strip { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 56px 40px; }
+.value-strip-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 56px; align-items: center; }
+.vs-eyebrow { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; color: #0284c7; margin-bottom: 10px; }
+.vs-title { font-size: clamp(1.3rem,2.5vw,1.9rem); font-weight: 900; color: var(--navy); line-height: 1.3; margin-bottom: 12px; }
+.vs-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; max-width: 440px; margin-bottom: 22px; }
+.vs-benefit-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.vs-benefit-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
+.vs-benefit-num { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+.vs-benefit-label { font-size: 11px; color: var(--text-sub); margin-top: 3px; line-height: 1.4; }
+
+/* ─── SAVINGS CALLOUT ─── */
+.savings-callout { background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 18px 24px; margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.sc-icon { width: 40px; height: 40px; background: #dcfce7; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sc-text strong { font-size: 14px; font-weight: 700; color: #166534; display: block; margin-bottom: 3px; }
+.sc-text span { font-size: 13px; color: #15803d; }
+
+@media (max-width: 900px) {
+  .hero-stat { padding: 0 14px; } .hs-num { font-size: 18px; }
+  .value-strip { padding: 48px 20px; }
+  .value-strip-inner { grid-template-columns: 1fr; gap: 32px; }
+  .vs-benefit-cards { grid-template-columns: repeat(2,1fr); }
+  .savings-callout { flex-direction: column; align-items: flex-start; }
 }
-.fade-up.in { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -608,8 +624,6 @@ footer {
     <div class="nav-links">
       <button class="nav-link" onclick="scrollToFeatures()">功能介紹</button>
       <button class="nav-link" onclick="scrollToPricing()">訂閱方案</button>
-      <button class="nav-link" onclick="showView('access')">限量活動</button>
-      <button class="nav-link" onclick="showView('news')">點數活動</button>
     </div>
   </div>
   <div class="nav-right">
@@ -627,41 +641,32 @@ footer {
   <section class="hero">
     <div class="hero-eyebrow">
       <div class="hero-dot"></div>
-      全台領先的駕駛人數位通行證
+      10,000+ 位駕駛人選擇的出行通行證
     </div>
-    <h1>串聯你的移動日常<br>解鎖更多出行體驗</h1>
-    <p class="hero-sub">一鍵整合停車、加油、ETC 自動繳費，讓 AI 出行秘書替你把每段旅程都安排好。</p>
+    <h1>停車省錢・加油省錢<br>每次出行都在幫你回饋</h1>
+    <p class="hero-sub">DPASS 訂閱讓你在 350+ 合作停車場自動享有會員折扣費率、130+ 加油站每公升省錢，ETC 自動繳費不再麻煩。一個訂閱，年省萬元以上。</p>
     <div class="hero-btns">
-      <button class="btn-hero-primary" onclick="window.open('https://app.pass.credit/','_blank')">免費開始使用</button>
-      <button class="btn-hero-ghost" onclick="scrollToFeatures()">了解功能介紹 →</button>
+      <button class="btn-hero-primary" onclick="window.open('https://app.pass.credit/pricing/','_blank')">立即查看訂閱方案</button>
+      <button class="btn-hero-ghost" onclick="window.open('https://app.pass.credit/','_blank')">免費開始使用 →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hs-num">350+</div><div class="hs-label">合作停車場</div></div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><div class="hs-num">130+</div><div class="hs-label">合作加油站</div></div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><div class="hs-num">469+</div><div class="hs-label">充電站</div></div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><div class="hs-num">NT$10,000+</div><div class="hs-label">一般通勤族年均省費</div></div>
     </div>
 
     <!-- QUICK ENTRY CARDS -->
     <div class="entry-section">
       <p class="entry-label">快速前往</p>
-      <div class="entry-grid">
+      <div class="entry-grid" style="grid-template-columns:1fr;max-width:300px;margin:0 auto;">
         <div class="entry-card gold" onclick="window.open('https://app.pass.credit/pricing/','_blank')">
           <div class="entry-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20v2H2zm2-4 4-8 4 6 4-3 4 5H4z"/></svg></div>
-          <div class="entry-title">Prime 訂閱方案</div>
-          <div class="entry-desc">查看 Lite、One、Prime 完整方案與定價</div>
-          <div class="entry-arrow">→</div>
-        </div>
-        <div class="entry-card" onclick="showView('access')">
-          <div class="entry-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="9" x2="9" y2="15"/></svg></div>
-          <div class="entry-title">限量活動 Access</div>
-          <div class="entry-desc">演唱會、賽事、頂級旅遊優先名額</div>
-          <div class="entry-arrow">→</div>
-        </div>
-        <div class="entry-card" onclick="showView('news')">
-          <div class="entry-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-          <div class="entry-title">點數活動</div>
-          <div class="entry-desc">最新點數優惠與活動兌換資訊</div>
-          <div class="entry-arrow">→</div>
-        </div>
-        <div class="entry-card" onclick="window.open('https://dpass-demo.web.app/products','_blank')">
-          <div class="entry-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M9 11V7a3 3 0 0 1 6 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
-          <div class="entry-title">AI 出行秘書</div>
-          <div class="entry-desc">智慧規劃停車加油、出行建議入口</div>
+          <div class="entry-title">查看訂閱方案</div>
+          <div class="entry-desc">Lite、One、Prime 完整方案與定價一覽</div>
           <div class="entry-arrow">→</div>
         </div>
       </div>
@@ -675,9 +680,13 @@ footer {
   <style>
   .story-section {
     max-width: 1100px; margin: 0 auto;
-    padding: 80px 40px;
+    padding: 56px 40px;
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 64px; align-items: center;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   }
   .story-section.reverse { direction: rtl; }
   .story-section.reverse > * { direction: ltr; }
@@ -737,9 +746,17 @@ footer {
   .feat-row-desc  { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
   .feat-note { font-size: 11px; color: var(--text-muted); line-height: 1.7; padding-top: 4px; }
   @media (max-width: 900px) {
-    .story-section { grid-template-columns: 1fr; gap: 40px; padding: 56px 20px; }
+    .story-section { grid-template-columns: 1fr; gap: 40px; padding: 40px 20px; }
     .story-section.reverse { direction: ltr; }
   }
+  </style>
+  <style>
+  #features-anchor { max-width: 1140px; margin: 0 auto; padding: 32px 40px 48px; display: flex; flex-direction: column; gap: 16px; }
+  #features-anchor .story-section { max-width: 100%; margin: 0; }
+  #features-anchor hr.section-divider { display: none; }
+  .section-divider { border-color: transparent; }
+  .feat-panel { background: #f8f9fb; }
+  @media (max-width: 900px) { #features-anchor { padding: 16px 16px 32px; gap: 12px; } }
   </style>
 
   <!-- ① 點數折抵 -->
@@ -893,6 +910,24 @@ footer {
 
   </div><!-- end features-anchor -->
 
+  <!-- VALUE SPOTLIGHT -->
+  <div class="value-strip">
+    <div class="value-strip-inner">
+      <div>
+        <div class="vs-eyebrow">為什麼選 DPASS</div>
+        <h3 class="vs-title">訂一年，省的比付的多</h3>
+        <p class="vs-desc">以每天通勤停車 2 小時、每週加油 40 公升的駕駛為例，One 方案一年省下的費用遠超 NT$3,999 年費——第一年就能回本，後續年年純賺。</p>
+        <button class="btn-outline-navy" onclick="window.open('https://app.pass.credit/pricing/','_blank')">查看完整訂閱方案 →</button>
+      </div>
+      <div class="vs-benefit-cards">
+        <div class="vs-benefit-card"><div class="vs-benefit-num" style="color:#059669;">NT$33<span style="font-size:13px;font-weight:400;color:var(--text-sub)">/時</span></div><div class="vs-benefit-label">One 方案停車<br>會員優惠費率</div></div>
+        <div class="vs-benefit-card"><div class="vs-benefit-num" style="color:#ea580c;">NT$1<span style="font-size:13px;font-weight:400;color:var(--text-sub)">/公升</span></div><div class="vs-benefit-label">One 方案加油<br>每公升省費</div></div>
+        <div class="vs-benefit-card"><div class="vs-benefit-num" style="color:#7c3aed;">15%</div><div class="vs-benefit-label">One 方案充電<br>麻吉幣回饋</div></div>
+        <div class="vs-benefit-card" style="border-color:#d97706;background:#fffbeb;"><div class="vs-benefit-num" style="color:#d97706;">NT$3,999</div><div class="vs-benefit-label">One 方案<br>年費起</div></div>
+      </div>
+    </div>
+  </div>
+
   <!-- PRICING TEASER -->
   <hr class="section-divider">
   <div id="pricing-anchor">
@@ -900,8 +935,8 @@ footer {
       <div class="pricing-inner">
         <div class="section-center fade-up" style="margin-bottom:0;">
           <span class="section-eyebrow ey-gold">訂閱方案</span>
-          <h2 class="section-title">選擇最適合你的方案</h2>
-          <p class="section-sub">年繳更划算，同樣服務省更多</p>
+          <h2 class="section-title">選對方案，讓出行成本<br>替你工作</h2>
+          <p class="section-sub">One 方案年費 NT$3,999，停車加油省費即可回本。Prime 方案享受更多頂級禮遇與限量活動優先名額。</p>
         </div>
         <div class="plans-row">
           <!-- Lite -->
@@ -948,6 +983,14 @@ footer {
             </ul>
           </div>
         </div>
+        <div class="savings-callout">
+          <div class="sc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="sc-text">
+            <strong>試算範例：每天通勤停車 2 小時 × 每週加油 40 公升</strong>
+            <span>One 方案停車折扣 + 加油每公升省 NT$1，一般通勤族年省費用估計超過年費 NT$3,999——第一年就能回本。</span>
+          </div>
+          <button class="btn-outline-navy" onclick="window.open('https://app.pass.credit/pricing/','_blank')" style="white-space:nowrap;">查看完整方案 →</button>
+        </div>
         <div class="pricing-cta-row">
           <button class="btn-outline-navy" onclick="window.open('https://app.pass.credit/pricing/','_blank')">查看完整功能比較表 →</button>
         </div>
@@ -956,10 +999,13 @@ footer {
   </div>
 
   <!-- CTA BANNER -->
-  <div class="cta-banner fade-up">
-    <h2>立即加入駕駛中心</h2>
-    <p>免費開始，停車加油每次都有回饋</p>
-    <button class="btn-hero-primary" onclick="window.open('https://app.pass.credit/','_blank')">免費開始使用</button>
+  <div class="cta-banner">
+    <h2>你每年花在停車加油上多少錢？</h2>
+    <p>DPASS 讓每次付費都有實質回饋——絕大多數通勤族第一年就能透過省下的費用讓年費回本</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-hero-primary" onclick="window.open('https://app.pass.credit/pricing/','_blank')">查看訂閱方案</button>
+      <button class="btn-hero-ghost" onclick="window.open('https://app.pass.credit/','_blank')">免費開始使用 →</button>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -985,8 +1031,6 @@ footer {
         <h4>探索</h4>
         <ul>
           <li><a href="https://app.pass.credit/pricing/" target="_blank">訂閱方案</a></li>
-          <li><button onclick="showView('access')">限量活動 Access</button></li>
-          <li><button onclick="showView('news')">點數活動</button></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1005,300 +1049,6 @@ footer {
 </div><!-- end home -->
 
 
-<!-- ════════════════════════════════
-     ACCESS VIEW
-════════════════════════════════ -->
-<div id="view-access" class="view">
-  <div class="page-body">
-    <button class="page-back-btn" onclick="showView('home')">← 回首頁</button>
-
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-      <span class="section-eyebrow ey-gold" style="margin:0;">Prime 專屬</span>
-    </div>
-    <h1 class="page-h1">限量活動 <span style="color:var(--gold);">Access</span></h1>
-    <p class="page-sub">頂級體驗，稀缺優先名額。Prime 會員搶先預約，獨享一般人無法取得的席次。</p>
-
-    <div class="prime-ribbon">
-      <div class="prime-ribbon-text">
-        <strong><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M2 20h20v2H2zm2-4 4-8 4 6 4-3 4 5H4z"/></svg>此頁面為 Autopass Prime 會員專屬</strong>
-        <span>升級 Prime 方案即可解鎖所有限量活動預約資格</span>
-      </div>
-      <button class="btn-ribbon" onclick="window.open('https://app.pass.credit/pricing/','_blank')">查看 Prime 方案 →</button>
-    </div>
-
-    <div class="filter-bar" id="access-filter">
-      <button class="filter-btn on" onclick="filterAccess('all',this)">全部</button>
-      <button class="filter-btn" onclick="filterAccess('travel',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> 稀缺旅遊</button>
-      <button class="filter-btn" onclick="filterAccess('concert',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> 演唱會</button>
-      <button class="filter-btn" onclick="filterAccess('sports',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 國際賽事</button>
-      <button class="filter-btn" onclick="filterAccess('show',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 展演票</button>
-      <button class="filter-btn" onclick="filterAccess('auto',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> 汽車品牌活動</button>
-    </div>
-
-    <div class="access-grid" id="access-grid">
-
-      <div class="access-card" data-cat="travel">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#1e3a5f,#2563eb33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
-          <span class="access-cat-label">稀缺旅遊</span>
-          <span class="access-spots-label">剩 3 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">日本富士私人套組 — 小山町奢旅 5 天</div>
-          <div class="access-meta"><span>2025 年 8 月</span><span>限 6 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="concert">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#1e1b4b,#4338ca33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
-          <span class="access-cat-label">熱門演唱會</span>
-          <span class="access-spots-label">剩 8 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">五月天 2025 世界巡迴 — 台北站前排席</div>
-          <div class="access-meta"><span>2025 年 9 月</span><span>限 20 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="sports">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#14532d,#16a34a33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <span class="access-cat-label">國際賽事</span>
-          <span class="access-spots-label">剩 5 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">F1 日本大獎賽 2026 — 正賽看台優先席</div>
-          <div class="access-meta"><span>2026 年 4 月</span><span>限 10 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="show">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#3b1f6e,#7c3aed33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-          <span class="access-cat-label">展演票</span>
-          <span class="access-spots-label">剩 12 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">國家兩廳院年度旗艦舞台劇 — VIP 包廂席</div>
-          <div class="access-meta"><span>2025 年 10 月</span><span>限 16 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="auto">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#1c1917,#78716c33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-          <span class="access-cat-label">汽車品牌活動</span>
-          <span class="access-spots-label">剩 20 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">BMW 台灣新車發表晚宴暨賽道試駕體驗日</div>
-          <div class="access-meta"><span>2025 年 7 月</span><span>限 30 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="travel">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#0c4a6e,#0284c733)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-          <span class="access-cat-label">稀缺旅遊</span>
-          <span class="access-spots-label">剩 2 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">馬爾地夫水上屋私人包船 5 天行程</div>
-          <div class="access-meta"><span>2025 年 12 月</span><span>限 4 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="concert">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#4a1942,#a855f733)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
-          <span class="access-cat-label">熱門演唱會</span>
-          <span class="access-spots-label">剩 15 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">周杰倫嘉年華世界巡迴演唱會 — 台北加場</div>
-          <div class="access-meta"><span>2026 年 1 月</span><span>限 30 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="sports">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#172554,#2563eb33)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
-          <span class="access-cat-label">國際賽事</span>
-          <span class="access-spots-label">剩 6 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">2026 FIFA 世界盃亞洲區資格賽 — 貴賓包廂</div>
-          <div class="access-meta"><span>2026 年 3 月</span><span>限 12 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-      <div class="access-card" data-cat="auto">
-        <div class="access-thumb">
-          <div class="access-thumb-gradient" style="background:linear-gradient(135deg,#1e1e1e,#52525233)"></div>
-          <div class="access-thumb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>
-          <span class="access-cat-label">汽車品牌活動</span>
-          <span class="access-spots-label">剩 10 名額</span>
-        </div>
-        <div class="access-body">
-          <div class="access-title">Porsche 911 GT3 專屬賽道日 — 大鵬灣</div>
-          <div class="access-meta"><span>2025 年 11 月</span><span>限 15 席</span></div>
-          <button class="access-btn" onclick="window.open('https://app.pass.credit/pricing/','_blank')">Prime 搶先預約</button>
-        </div>
-      </div>
-
-    </div><!-- end access-grid -->
-  </div>
-</div><!-- end access view -->
-
-
-<!-- ════════════════════════════════
-     NEWS / POINTS VIEW
-════════════════════════════════ -->
-<div id="view-news" class="view">
-  <div class="page-body">
-    <button class="page-back-btn" onclick="showView('home')">← 回首頁</button>
-
-    <span class="section-eyebrow ey-blue" style="margin-bottom:8px;display:inline-block;">點數活動</span>
-    <h1 class="page-h1">最新點數活動</h1>
-    <p class="page-sub">DPASS 最新優惠、限時活動與點數兌換資訊，掌握每一個回饋機會。</p>
-
-    <div class="news-hero">
-      <div class="news-hero-left">
-        <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>麻吉幣 5 月限定加碼</h2>
-        <p>5 月整月停車消費，麻吉幣回饋翻倍！One 方案 6%、Prime 方案 10%</p>
-      </div>
-      <button class="btn-outline-navy" onclick="window.open('https://www.autopass.xyz/about/newsroom/?page=1','_blank')">查看詳情 →</button>
-    </div>
-
-    <div class="filter-bar">
-      <button class="filter-btn on">全部</button>
-      <button class="filter-btn">點數回饋</button>
-      <button class="filter-btn">限時優惠</button>
-      <button class="filter-btn">新功能</button>
-    </div>
-
-    <div class="news-grid">
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v14"/><path d="M14 10.5V16a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2v-5l-2-3"/><path d="M3 22h12"/><line x1="6" y1="11" x2="11" y2="11"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-pts">點數回饋</span>
-          <div class="news-title">加油麻吉幣回饋升級！Prime 每公升享 NT$1.2 折抵</div>
-          <p class="news-desc">即日起，Autopass Prime 會員至全臺 130+ 合作加油站加油，每公升折抵金額正式升級。</p>
-          <div class="news-footer">
-            <span>2025.05.01</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.19M15 6h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3.19"/><line x1="23" y1="13" x2="23" y2="11"/><polyline points="11 6 7 12 13 12 9 18"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-event">限時優惠</span>
-          <div class="news-title">充電站擴點至 469+ 場站，Prime 回饋提升至 30%</div>
-          <p class="news-desc">電動車車主注意！DPASS 合作充電站大幅擴點，Prime 方案充電麻吉幣回饋同步升級至 30%。</p>
-          <div class="news-footer">
-            <span>2025.04.20</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M9 11V7a3 3 0 0 1 6 0v4"/><circle cx="12" cy="16" r="1" fill="#9ca3af"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-new">新功能</span>
-          <div class="news-title">AI 出行秘書全新上線，自動學習你的停車偏好</div>
-          <p class="news-desc">升級版 AI 出行秘書正式發布，支援個人化停車習慣學習與出行場站推薦功能。</p>
-          <div class="news-footer">
-            <span>2025.04.10</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-pts">點數回饋</span>
-          <div class="news-title">停車場擴充至 350+ 場站，全臺覆蓋更完整</div>
-          <p class="news-desc">DPASS 合作停車場網絡再擴大，One 方案 NT$33/時、Prime 方案 NT$30/時，全臺更多地點適用。</p>
-          <div class="news-footer">
-            <span>2025.03.28</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-event">限時優惠</span>
-          <div class="news-title">年繳方案限定：7,000 點麻吉幣一次入帳</div>
-          <p class="news-desc">Prime 年繳方案限定優惠！訂閱即贈 7,000 麻吉幣，可折抵停車、加油等各類出行消費。</p>
-          <div class="news-footer">
-            <span>2025.03.15</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-      <a class="news-card" href="https://www.autopass.xyz/about/newsroom/?page=1" target="_blank">
-        <div class="news-thumb">
-          <div class="news-thumb-bg"></div>
-          <div class="news-thumb-emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        </div>
-        <div class="news-body">
-          <span class="news-tag tag-new">新功能</span>
-          <div class="news-title">Prime 新增車險投保服務，一站式保障上路</div>
-          <p class="news-desc">Autopass Prime 正式整合車險投保服務，透過 DPASS App 即可快速完成投保，出行更安心。</p>
-          <div class="news-footer">
-            <span>2025.02.20</span>
-            <span>查看詳情 →</span>
-          </div>
-        </div>
-      </a>
-
-    </div><!-- end news-grid -->
-
-    <div class="news-load-more">
-      <button class="btn-outline-navy" onclick="window.open('https://www.autopass.xyz/about/newsroom/?page=1','_blank')">查看所有活動消息 →</button>
-    </div>
-  </div>
-</div><!-- end news view -->
 
 
 <script>
